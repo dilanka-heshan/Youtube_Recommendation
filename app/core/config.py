@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     youtube_api_key: Optional[str] = None
     youtube_quota_limit: int = 10000  # Daily quota limit
     youtube_rate_limit: int = 100  # Requests per 100 seconds
+
+    #Supabase Configuration
+    supabase_url: str = ""
+    supabase_key: str = ""
     
     # Recommendation Settings
     max_recommendations: int = 20  # Limit to prevent abuse
@@ -58,6 +62,13 @@ class Settings(BaseSettings):
         """Ensure secret key is changed from default"""
         if v == "change-this-in-production":
             print("WARNING: Using default secret key. Change this in production!")
+        return v
+    
+    @validator('supabase_url')
+    def validate_supabase_url(cls, v):
+        """Ensure Supabase URL is provided"""
+        if not v:
+            print("WARNING: Supabase URL is not set. Please configure it in the environment.")
         return v
     
     class Config:
